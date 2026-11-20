@@ -1,0 +1,49 @@
+Use official PHP 8.2 CLI image with required Laravel 12 & MySQL extensions
+
+FROM php:8.2-cli
+
+Install system dependencies and PHP extensions (pdo_mysql, zip, bcmath, mbstring, xml)
+
+RUN apt-get update && apt-get install -y 
+
+git 
+
+unzip 
+
+libzip-dev 
+
+libonig-dev 
+
+libxml2-dev 
+
+&& docker-php-ext-install pdo_mysql zip bcmath mbstring xml 
+
+&& apt-get clean && rm -rf /var/lib/apt/lists/*
+
+Install Composer
+
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+Set working directory
+
+WORKDIR /app
+
+Copy repository files
+
+COPY . .
+
+Install production PHP dependencies
+
+RUN composer install --no-dev --optimize-autoloader --no-interaction
+
+Ensure storage and bootstrap/cache are writable
+
+RUN chmod -R 775 storage bootstrap/cache
+
+Expose Render's dynamic port
+
+EXPOSE 8000
+
+Run database migrations automatically and start the Laravel server
+
+CMD php artisan config:clear && php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=${PORT:-8000}
