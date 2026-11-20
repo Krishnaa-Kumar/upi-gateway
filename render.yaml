@@ -1,0 +1,44 @@
+Render Blueprint for mynkdev-21/upi-gateway (PHP 8.2 / Laravel + External MySQL)
+
+services:
+
+type: web
+name: chemvault-upi-gateway
+runtime: docker
+plan: free
+region: singapore
+dockerfilePath: ./Dockerfile
+envVars:
+
+key: APP_NAME
+value: ChemVault UPI Gateway
+
+key: APP_ENV
+value: production
+
+key: APP_DEBUG
+value: "false"
+
+key: APP_KEY
+generateValue: true
+
+key: DB_CONNECTION
+value: mysql
+
+key: DB_HOST
+sync: false # Paste your TiDB Cloud / Aiven MySQL Host here in Render
+
+key: DB_PORT
+value: "4000" # Use 4000 for TiDB Cloud or your Aiven MySQL port
+
+key: DB_DATABASE
+value: upi_gateway
+
+key: DB_USERNAME
+sync: false # Paste your MySQL Username here in Render
+
+key: DB_PASSWORD
+sync: false # Paste your MySQL Password here in Render
+
+key: UPI_VPA
+value: 7888690390@upi
